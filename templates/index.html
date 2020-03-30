@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" class="w-100 h-100">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!--<link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">-->
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Movie_searcher!</title>
+    </head>
+    <body class="w-100 h-100 bg-dark">
+        <div class="container bg-secondary text-white h-100 p-4">
+            <h3 class="text-center">Enter a Movie/Show to search for:</h3>
+            <form class="m-3" action="" method="post" role="form" autocomplete="off">
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="checkbox" class="form-check-input ml-2" id="Netflix">
+                        <label class="form-check-label ml-4 mr-5" for="Netflix">Netflix</label>
+                        <input type="checkbox" class="form-check-input" id="Amazon">
+                        <label class="form-check-label" for="Amazon">Amazon Prime</label>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="checkbox" class="form-check-input ml-2" id="iTunes">
+                        <label class="form-check-label ml-4 mr-5" for="Amazon">iTunes</label>
+                        <input type="checkbox" class="form-check-input" id="Google Play">
+                        <label class="form-check-label" for="Netflix">Google Play</label>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="form-inline row">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Title" name="title">
+                        <button type="submit" class="btn btn-dark">Go!</button>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+            {% block content %}
+                {% if title %}
+                    <div class="jumbotron bg-dark">
+                        <h3 class="display-4">Your results for {{ title }}:</h3>
+                        <div class="m-3">
+                            {% for i in info %}
+                                <p>{{ i }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endblock content %}
+        </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
