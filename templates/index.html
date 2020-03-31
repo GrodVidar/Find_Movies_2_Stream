@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en" class="w-100 h-100">
-    <head>
+<html lang="en" style="height: 1rem">
+    <head style="height: 100%">
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <title>Movie_searcher!</title>
     </head>
-    <body class="w-100 h-100 bg-success pb-5" style="background: url('/static/bg.png') no-repeat center center fixed;">
+    <body class="w-100 bg-success" style="min-height: 100%; background: url('/static/bg.png') no-repeat center center fixed;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <a class="navbar-brand text-white" href="http://grodvidar.se">
                   <img src="{{ url_for('static', filename='grod.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </nav>
-        <div class="container bg-secondary text-white h-100 p-4">
+        <div class="container bg-secondary text-white p-4" style="min-height: 100vh">
             <h3 class="text-center">Enter a Movie/Show to search for:</h3>
             <form class="m-3" action="" method="post" role="form" autocomplete="off">
                 <div class="row">
@@ -61,11 +61,11 @@
             </form>
             {% block content %}
                 {% if title %}
-                    <div class="jumbotron bg-dark" style="clear: both;">
-                        <h3 class="display-4">Your results for {{ title }}:</h3>
-                        <div class="m-3">
+                    <div class="jumbotron bg-dark h-100 mt-4">
+                        <h3 class="display-4">Your results for <strong>{{ title }}</strong>:</h3>
+                        <div>
                             {% for i in info %}
-                                <p>{{ i }}</p>
+                                <p class="ml-4">{{ i }}</p>
                             {% endfor %}
                         </div>
                     </div>
