@@ -34,18 +34,19 @@ def viaplay_finder(name):
                 products = json_resp['_embedded']['viaplay:blocks'][0]['_embedded']['viaplay:products']
                 movies = {}
                 for i in range(len(products)):
-                    movies[i] = {}
-                    movies[i]['name'] = products[i]['_links']['self']['title']
+                    movie = products[i]['_links']['self']['title']
+                    movies[movie] = {}
                     if 'tvod' in products[i]['system']['availability']:
-                        movies[i]['rent_price'] = products[i]['system']['availability']['tvod']['planInfo']['price']
+                        movies[movie]['rent_price'] = products[i]['system']['availability']['tvod']['planInfo']['price']
                     if 'est' in products[i]['system']['availability']:
-                        movies[i]['purchase_price'] = products[i]['system']['availability']['est']['planInfo']['price']
+                        movies[movie]['purchase_price'] = products[i]['system']['availability']['est']['planInfo']['price']
                     if 'svod' in products[i]['system']['availability']:
-                        movies[i]['is_streamable'] = True
+                        movies[movie]['is_streamable'] = True
                 return movies
+    return None
 
 
-def find(title):
+def find(title, params):
     with open("amount.txt", "r") as file:
         amount = int(file.readline())
     if amount < 1000 and title and len(title) > 1:
@@ -59,19 +60,42 @@ def find(title):
         with open("amount.txt", "w") as file:
             file.write(str(amount + 1))
         movies = get_providers(response.json())
+        movies_list = []
         if movies != '!':
-            movies_list = []
             for i in movies:
                 movies_string = ''
                 movies_string += f"{i} can be seen at"
                 for j in movies[i]:
-                    movies_string += f" {j},"
+                    if j in params[title]:
+                        movies_string += f" {j},"
                 movies_string = movies_string[:-1]
                 movies_list.append(movies_string)
-            print(movies_list)
-            return movies_list
         else:
             return "No results!"
+        if 'Viaplay' in params[title]:
+            via_movies = viaplay_finder(title)
+            if via_movies:
+                for i in via_movies:
+                    och = False
+                    movies_string = f"{i} can be "
+                    if 'is_streamable' in via_movies[i]:
+                        if och:
+                            movies_string += '& '
+                        movies_string += "streamed "
+                        och = True
+                    if 'rent_price' in via_movies[i]:
+                        if och:
+                            movies_string += '& '
+                        movies_string += f"rented for {via_movies[i]['rent_price']} SEK "
+                        och = True
+                    if 'purchase_price' in via_movies[i]:
+                        if och:
+                            movies_string += '& '
+                        movies_string += f"purchased for {via_movies[i]['purchase_price']} SEK "
+                    movies_string += "at Viaplay"
+                    movies_list.append(movies_string)
+        print(movies_list)
+        return movies_list
     else:
         return "free quota exceeded or name too short"
 
@@ -79,11 +103,22 @@ def find(title):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     title = flask.request.form.get('title')
-    print(flask.request.form.get('title'))
+    print(flask.request.form)
     if not title:
         return flask.render_template('index.html')
     else:
-        return flask.render_template('index.html', title=title, info=find(title))
+        my_dict = {title: []}
+        if flask.request.form.get('Netflix'):
+            my_dict[title].append('Netflix')
+        if flask.request.form.get('Amazon'):
+            my_dict[title].append('Amazon Prime Video')
+        if flask.request.form.get('Google Play'):
+            my_dict[title].append('Google Play')
+        if flask.request.form.get('iTunes'):
+            my_dict[title].append('iTunes')
+        if flask.request.form.get('Viaplay'):
+            my_dict[title].append('Viaplay')
+        return flask.render_template('index.html', title=title, info=find(title, my_dict))
 
 
 if __name__ == '__main__':
