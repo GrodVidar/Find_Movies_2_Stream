@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <title>Movie_searcher!</title>
     </head>
-    <body class="w-100 h-100 bg-success pb-5" style="background: url('/static/bg.png') no-repeat center center fixed; overflow-y: hidden;">
+    <body class="w-100 h-100 bg-success pb-5" style="background: url('/static/bg.png') no-repeat center center fixed;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <a class="navbar-brand text-white" href="http://grodvidar.se">
                   <img src="{{ url_for('static', filename='grod.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -30,7 +30,7 @@
             <form class="m-3" action="" method="post" role="form" autocomplete="off">
                 <div class="row">
                     <div class="col"></div>
-                    <div class="col">
+                    <div class="col-xs-12">
                         <input type="checkbox" checked="checked" class="form-check-input" id="Netflix" name="Netflix">
                         <label class="form-check-label mr-5" for="Netflix">Netflix</label>
                         <input type="checkbox" checked="checked" class="form-check-input" id="Amazon" name="Amazon">
@@ -42,17 +42,17 @@
                 </div>
                 <div class="row">
                     <div class="col"></div>
-                    <div class="col">
-                        <input type="checkbox"class="form-check-input ml-2" id="iTunes" name="iTunes">
-                        <label class="form-check-label ml-4 mr-5" for="Amazon">iTunes</label>
+                    <div class="col-xs-12">
+                        <input type="checkbox"class="form-check-input" id="iTunes" name="iTunes">
+                        <label class="form-check-label mr-5" for="iTunes">iTunes</label>
                         <input type="checkbox" class="form-check-input" id="Google Play" name="Google Play">
-                        <label class="form-check-label" for="Netflix">Google Play</label>
+                        <label class="form-check-label" for="Google Play">Google Play</label>
                     </div>
                     <div class="col"></div>
                 </div>
                 <div class="form-inline row">
                     <div class="col"></div>
-                    <div class="col">
+                    <div class="col-xs-12">
                         <input type="text" class="form-control" placeholder="Title" name="title">
                         <button type="submit" class="btn btn-dark">Go!</button>
                     </div>
