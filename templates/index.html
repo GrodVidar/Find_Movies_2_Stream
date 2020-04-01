@@ -62,11 +62,18 @@
             {% block content %}
                 {% if title %}
                     <div class="jumbotron bg-dark h-100 mt-4">
-                        <h3 class="display-4">Your results for <strong>{{ title }}</strong>:</h3>
-                        <div>
-                            {% for i in info %}
-                                <p class="ml-4">{{ i }}</p>
-                            {% endfor %}
+                        <div class="container">
+                            <h3 class="display-4">Your results for <strong class="text-capitalize">{{ title }}</strong>:</h3>
+                            <div class="row">
+                                <div class="col-8 col-xs-8">
+                                    {% for i in info %}
+                                        <p class="ml-4">{{ i }}</p>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-xs-2">
+                                    <img class="img-responsive ml-5" src="{{ image }}" width="200" height="300" alt="error image">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endif %}
