@@ -8,7 +8,7 @@ from email.utils import formataddr
 from keys import *
 
 
-def send_mail(mail, msg):
+def send_mail(mail, name, msg):
     port = 465
     message = MIMEMultipart("alternative")
     message['Subject'] = "Movie Search Form"
@@ -17,14 +17,14 @@ def send_mail(mail, msg):
 
     text = f"""\
         Hello Vidar! ☺
-        {mail} sent this message:
+        {name} <{mail}> sent this message:
         \"{msg}\""""
     html = f"""\
         <html>
           <body>
             <p>Hello Vidar! ☺<br>
-               {mail} sent this message:<br>
-               \"{msg}\"<br>
+               {name} <{mail}> sent this message:<br>
+               \"{msg}\"
             </p>
           </body>
         </html>
