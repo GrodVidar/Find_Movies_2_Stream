@@ -8,7 +8,7 @@ from email.utils import formataddr
 from keys import *
 
 
-def send_mail(mail, name, msg):
+def send_mail(mail, msg, name="Unknown"):
     port = 465
     message = MIMEMultipart("alternative")
     message['Subject'] = "Movie Search Form"

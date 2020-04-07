@@ -114,7 +114,7 @@ def home():
     print(flask.request.form)
     if not title:
         if message:
-            send_mail(flask.request.form.get('mail'), message)
+            send_mail(flask.request.form.get('mail'), message, flask.request.form.get('name'))
         return flask.render_template('index.html')
 
     else:
