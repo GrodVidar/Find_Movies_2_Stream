@@ -8,24 +8,26 @@
         <!--<link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">-->
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <title>Movie_searcher!</title>
+        <title>Movie Searcher!</title>
     </head>
     <body class="w-100 bg-success" style="min-height: 100%; background: url('/static/bg.png') no-repeat center center fixed;">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-              <a class="navbar-brand text-white" href="http://grodvidar.se">
-                  <img src="{{ url_for('static', filename='grod.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
-                  GrodVidar
-              </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active text-white" href="">Home <span class="sr-only">(current)</span></a>
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark mb-5">
+            <div class="container bg-dark">
+                  <a class="navbar-brand text-white" href="http://grodvidar.se">
+                      <img src="{{ url_for('static', filename='grod.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                      GrodVidar
+                  </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link active text-white" href="">Home <span class="sr-only">(current)</span></a>
+                    </div>
                 </div>
             </div>
         </nav>
-        <div class="container bg-secondary text-white p-4" style="min-height: 100vh">
+        <div class="container bg-secondary text-white p-4 mt-5" style="min-height: 100vh">
             <h3 class="text-center">Enter a Movie/Show to search for:</h3>
             <form class="m-3" action="" method="post" role="form" autocomplete="off">
                 <div class="row">
@@ -81,6 +83,43 @@
                 {% endif %}
             {% endblock content %}
         </div>
+        <footer class="page-footer font-small bg-dark pt-4">
+            <div class="container">
+                <p class="text-center text-light">Contact me:</p>
+                <form class="" action="" method="post" role="form" autocomplete="off">
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-md-8 mb-2 form-inline">
+                            <input class="form-control text-center" style="min-width: 45%" type="text" name="name" required="true" placeholder="Name"
+                                aria-label="Search">
+                            <div class="col"></div>
+                            <input class="form-control text-center" style="min-width: 45%" type="email" name="mail" required="true" placeholder="Your Email"
+                                aria-label="Search">
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-md-8 mb-1">
+                            <textarea type="text" class="form-control" rows="6" required="true" name="message" placeholder="Your message"></textarea>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-xs-12">
+                                <div class="">
+                                    <button class="btn btn-secondary btn-lg" type="submit">Send</button>
+                                </div>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="footer-copyright text-light text-center py-3">© 2020 Copyright:
+                <span class="text-success">Vidar Franzén</span>
+            </div>
+        </footer>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

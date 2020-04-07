@@ -1,11 +1,12 @@
 import flask
 import requests
 from keys import *
-
+from mail import send_mail
 app = flask.Flask(__name__)
 
 # Netflix, Amazon prime, iTunes and Google Play API-caller
-# using the Utelly API: "https://rapidapi.com/utelly/api/utelly"
+# using the Utelly's API: "https://rapidapi.com/utelly/api/utelly"
+# And Viaplay's open API
 
 
 def get_providers(resp):
@@ -109,9 +110,13 @@ def find(title, params):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     title = flask.request.form.get('title')
+    message = flask.request.form.get('message')
     print(flask.request.form)
     if not title:
+        if message:
+            send_mail(flask.request.form.get('mail'), message)
         return flask.render_template('index.html')
+
     else:
         my_dict = {title: [], "telly": False}
         if flask.request.form.get('Netflix'):
