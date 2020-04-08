@@ -57,6 +57,8 @@ def find(title, params):
     with open("amount.txt", "r") as file:
         amount = int(file.readline())
     image = ''
+    movies_list = []
+    print(len(title))
     if amount < 1000 and title and len(title) > 1 and params['telly']:
         url = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup"
         querystring = {"term": title, "country": "se"}
@@ -68,7 +70,6 @@ def find(title, params):
         with open("amount.txt", "w") as file:
             file.write(str(amount + 1))
         movies, image = get_providers(response.json())
-        movies_list = []
         if movies != '!':
             for i in movies:
                 movies_string = ''
@@ -79,8 +80,10 @@ def find(title, params):
                 movies_string = movies_string[:-1]
                 if movies_string != f"{i} can be seen a":
                     movies_list.append(movies_string)
-    else:
-        return "free quota exceeded or name too short"
+    elif amount >= 1000:
+        return ["free quota exceeded"], ""
+    elif len(title) < 2:
+        return ["title too short"], ""
     if 'Viaplay' in params[title]:
         via_movies, image = viaplay_finder(title)
         if via_movies:
