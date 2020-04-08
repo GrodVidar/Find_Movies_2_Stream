@@ -17,13 +17,13 @@ def send_mail(mail, msg, name="Unknown"):
 
     text = f"""\
         Hello Vidar! ☺
-        {name} <{mail}> sent this message:
+        {name} sent this message:
         \"{msg}\""""
     html = f"""\
         <html>
           <body>
             <p>Hello Vidar! ☺<br>
-               {name} <{mail}> sent this message:<br>
+               <a href="mailto:{mail}">{name}</a> sent this message:<br>
                \"{msg}\"
             </p>
           </body>
