@@ -50,7 +50,18 @@
                         <input type="checkbox" class="form-check-input" id="Google Play" name="Google Play">
                         <label class="form-check-label" for="Google Play">Google Play</label>
                     </div>
-                    <div class="col"></div>
+                    <div class="col">
+                        <select id="country" name="country">
+                            <option value="se">Sweden</option>
+                            <option value="be">Belgium</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="us">USA</option>
+                            <option value="es">Spain</option>
+                            <option value="no">Norway</option>
+                            <option value="fr">France</option>
+                            <option value="de">Germany</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col"></div>
@@ -102,6 +113,15 @@
                         <div class="col"></div>
                         <div class="col-md-8 mb-1">
                             <textarea type="text" class="form-control" rows="6" required="true" name="message" placeholder="Your message"></textarea>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-xs-12">
+                                <div class="">
+                                    {{ recaptcha }}
+                                </div>
                         </div>
                         <div class="col"></div>
                     </div>

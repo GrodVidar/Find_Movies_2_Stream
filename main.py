@@ -53,7 +53,7 @@ def viaplay_finder(name):
     return None
 
 
-def find(title, params):
+def find(title, params, country):
     with open("amount.txt", "r") as file:
         amount = int(file.readline())
     image = ''
@@ -61,7 +61,7 @@ def find(title, params):
     print(len(title))
     if amount < 1000 and title and len(title) > 1 and params['telly']:
         url = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup"
-        querystring = {"term": title, "country": "se"}
+        querystring = {"term": title, "country": country}
         headers = {
             'x-rapidapi-host': "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
             'x-rapidapi-key': api_key
@@ -114,6 +114,7 @@ def find(title, params):
 def home():
     title = flask.request.form.get('title')
     message = flask.request.form.get('message')
+    country = flask.request.form.get('country')
     print(flask.request.form)
     if not title:
         if message:
@@ -136,7 +137,7 @@ def home():
             my_dict['telly'] = True
         if flask.request.form.get('Viaplay'):
             my_dict[title].append('Viaplay')
-        info, image = find(title, my_dict)
+        info, image = find(title, my_dict, country)
         return flask.render_template('index.html', title=title, info=info, image=image)
 
 
