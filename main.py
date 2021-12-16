@@ -17,6 +17,7 @@ def get_providers(resp):
             name = resp['results'][j]['name']
             if j == 0:
                 img = resp['results'][j]['picture']
+                print(img)
             if 'locations' in resp['results'][j]:
                 names[name] = []
                 for i in range(len(resp['results'][j]['locations'])):
@@ -69,7 +70,17 @@ def find(title, params, country):
         response = requests.request("GET", url, headers=headers, params=querystring)
         with open("amount.txt", "w") as file:
             file.write(str(amount + 1))
-        movies, image = get_providers(response.json())
+        data = get_providers(response.json())
+        print(data)
+        movies = None
+        image = None
+        if len(data) > 1:
+            movies = data[0]
+            image = data[1]
+        else:
+            movies = data[0]
+
+        # movies, image = get_providers(response.json())
         if movies != '!':
             for i in movies:
                 movies_string = ''
@@ -138,9 +149,8 @@ def home():
         if flask.request.form.get('Viaplay'):
             my_dict[title].append('Viaplay')
         info, image = find(title, my_dict, country)
-        return flask.render_template('index.html', title=title, info=info, image=image)
+        return flask.render_template('index.html', title=title, info=info, image=image, site_key=site_key, )
 
 
 if __name__ == '__main__':
-    # print(viaplay_finder("shrek"))
     app.run(host="0.0.0.0", debug=True)

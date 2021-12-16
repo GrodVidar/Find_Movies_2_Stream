@@ -9,7 +9,7 @@ from keys import *
 
 
 def send_mail(mail, msg, name="Unknown"):
-    port = 465
+    port = 587
     message = MIMEMultipart("alternative")
     message['Subject'] = "Movie Search Form"
     message['From'] = formataddr((str(Header('Movie Search', 'utf-8')), sender_mail))
@@ -38,7 +38,9 @@ def send_mail(mail, msg, name="Unknown"):
 
     context = ssl.create_default_context()
 
-    with smtplib.SMTP_SSL(host, port, context=context) as server:
+    with smtplib.SMTP(host, port) as server:
+        server.ehlo()
+        server.starttls(context=context)
         server.login(sender_mail, passwd)
         server.sendmail(sender_mail, receiver_mail, message.as_string())
         server.close()
