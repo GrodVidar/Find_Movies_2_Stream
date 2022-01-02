@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="static/style.css">
         <title>Movie Searcher!</title>
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body class="w-100" style="min-height: 100%;">
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark mb-5">
@@ -98,7 +100,7 @@
         <footer class="page-footer font-small bg-dark pt-4">
             <div class="container">
                 <p class="text-center text-light">Contact me:</p>
-                <form class="" action="" method="post" role="form" autocomplete="off">
+                <form class="" id="contactForm" action="" method="post" role="form" autocomplete="off">
                     <div class="row">
                         <div class="col"></div>
                         <div class="col-md-8 mb-2 form-inline">
@@ -129,8 +131,9 @@
                     <div class="row">
                         <div class="col"></div>
                         <div class="col-xs-12">
-                                <div class="">
-                                    <button class="btn btn-secondary btn-lg" type="submit">Send</button>
+                                <div>
+                                    <button class="g-recaptcha btn btn-secondary btn-lg" data-sitekey="6Le3p7gdAAAAAJOX0c0qGRTfX5pOqeKu1IJjRaOj" data-callback="onSubmit" data-action="submit">Submit</button>
+                                    <!--<button class="btn btn-secondary btn-lg" type="submit">Send</button>-->
                                 </div>
                         </div>
                         <div class="col"></div>
@@ -141,6 +144,12 @@
                 <span class="text-success">Vidar Franzén</span>
             </div>
         </footer>
+
+        <script>
+           function onSubmit(token) {
+             document.getElementById("contactForm").submit();
+           }
+        </script>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
