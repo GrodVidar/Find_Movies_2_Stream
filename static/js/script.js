@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    if(!storageAvailable('localStorage')){
+    if(storageAvailable('localStorage')){
         $(function()
         {
             $('input[type=checkbox]').each(function()
