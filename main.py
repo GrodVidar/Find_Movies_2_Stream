@@ -2,6 +2,7 @@ import flask
 import requests
 from keys import *
 from mail import send_mail
+from justwatch import JustWatch
 app = flask.Flask(__name__)
 
 # Netflix, Amazon prime, iTunes and Google Play API-caller
@@ -9,116 +10,98 @@ app = flask.Flask(__name__)
 # And Viaplay's open API
 
 
-def get_providers(resp):
-    names = {}
-    img = ''
-    if resp and 'results' in resp:
-        for j in range(len(resp['results'])):
-            name = resp['results'][j]['name']
-            if j == 0:
-                img = resp['results'][j]['picture']
-                print(img)
-            if 'locations' in resp['results'][j]:
-                names[name] = []
-                for i in range(len(resp['results'][j]['locations'])):
-                    if 'display_name' in resp['results'][j]['locations'][i]:
-                        names[name].append(resp['results'][j]['locations'][i]['display_name'])
-            else:
-                return "!"
-        return names, img
-    else:
-        return "!"
+def get_provider(name, providers):
+    for provider in providers:
+        if provider['short_name'] == name:
+            return provider['clear_name']
 
 
-def viaplay_finder(name):
-    resp = requests.get("https://content.viaplay.se/pcdash-se/search?query="+name)
-    if resp:
-        img = ''
-        json_resp = resp.json()
-        if '_embedded' in json_resp:
-            if json_resp['_embedded']['viaplay:blocks'][0]['_embedded']['viaplay:products']:
-                products = json_resp['_embedded']['viaplay:blocks'][0]['_embedded']['viaplay:products']
-                movies = {}
-                for i in range(len(products)):
-                    movie = products[i]['_links']['self']['title']
-                    if i == 0 :
-                        img = products[i]['content']['images']['boxart']['url']
-                    movies[movie] = {}
-                    if 'tvod' in products[i]['system']['availability']:
-                        movies[movie]['rent_price'] = products[i]['system']['availability']['tvod']['planInfo']['price']
-                    if 'est' in products[i]['system']['availability']:
-                        movies[movie]['purchase_price'] = products[i]['system']['availability']['est']['planInfo']['price']
-                    if 'svod' in products[i]['system']['availability']:
-                        movies[movie]['is_streamable'] = True
-                return movies, img
-    return None
+def get_movie_image(title):
+    url = "https://imdb8.p.rapidapi.com/auto-complete"
+    querystring = {"q": title}
+
+    headers = {
+        'x-rapidapi-host': "imdb8.p.rapidapi.com",
+        'x-rapidapi-key': api_key
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring).json()
+    if 'd' in response:
+        if response['d']:
+            if len(response['d']) > 0:
+                return response['d'][0]['i']['imageUrl']
+    return ''
+
+
+def get_movie_providers(monetization_type, movie):
+    providers = []
+    for i in movie['monetization_types'][monetization_type]:
+        providers.append(i['provider_name'])
+    return providers
 
 
 def find(title, params, country):
-    with open("amount.txt", "r") as file:
-        amount = int(file.readline())
     image = ''
-    movies_list = []
-    print(len(title))
-    if amount < 1000 and title and len(title) > 1 and params['telly']:
-        url = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup"
-        querystring = {"term": title, "country": country}
-        headers = {
-            'x-rapidapi-host': "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
-            'x-rapidapi-key': api_key
-        }
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        with open("amount.txt", "w") as file:
-            file.write(str(amount + 1))
-        data = get_providers(response.json())
-        print(data)
-        movies = None
-        image = None
-        if len(data) > 1:
-            movies = data[0]
-            image = data[1]
-        else:
-            movies = data[0]
-
-        # movies, image = get_providers(response.json())
-        if movies != '!':
-            for i in movies:
-                movies_string = ''
-                movies_string += f"{i} can be seen at"
-                for j in movies[i]:
-                    if j in params[title]:
-                        movies_string += f" {j},"
-                movies_string = movies_string[:-1]
-                if movies_string != f"{i} can be seen a":
-                    movies_list.append(movies_string)
-    elif amount >= 1000:
-        return ["free quota exceeded"], ""
+    movie_data = []
+    movies = []
+    if title and len(title) > 1:
+        just_watch = JustWatch(country=country)
+        results = just_watch.search_for_item(query=title, providers=params)
+        providers = just_watch.get_providers()
+        for result in results['items']:
+            if image == '':
+                image = get_movie_image(result['title'])
+            movie = {
+                'title': result['title'],
+                'monetization_types': {
+                    'free':  [],
+                    'flatrate': [],
+                    'rent': [],
+                    'buy': []
+                }
+            }
+            for offer in result['offers']:
+                if offer['monetization_type'] in movie['monetization_types']:
+                    if offer['package_short_name'] in params:
+                        if get_provider(offer['package_short_name'], providers) not in \
+                                get_movie_providers(offer['monetization_type'], movie):
+                            provider_dict = {'provider_name': get_provider(offer['package_short_name'], providers)}
+                            if 'retail_price' in offer:
+                                provider_dict['price'] = f"{offer['retail_price']} {offer['currency']}"
+                            if 'urls' in offer:
+                                provider_dict['url'] = offer['urls']['standard_web']
+                            movie['monetization_types'][offer['monetization_type']].append(provider_dict)
+            movie_data.append(movie)
+        for movie in movie_data:
+            movie_string = f"{movie['title']} can be"
+            original_string = movie_string
+            for monetization_type in movie['monetization_types']:
+                if len(movie['monetization_types'][monetization_type]) > 0:
+                    provider_names = []
+                    for provider in movie['monetization_types'][monetization_type]:
+                        provider_names.append(provider['provider_name'])
+                    available_providers = ', '.join(provider_names)
+                    if monetization_type == 'free':
+                        if original_string != movie_string:
+                            movie_string += ' and'
+                        movie_string += f" watched for free at {available_providers}"
+                    if monetization_type == 'flatrate':
+                        if original_string != movie_string:
+                            movie_string += ' and'
+                        movie_string += f" streamed with a subscription at {available_providers}"
+                    if monetization_type == 'rent':
+                        if original_string != movie_string:
+                            movie_string += ' and'
+                        movie_string += f" rented at {available_providers}"
+                    if monetization_type == 'buy':
+                        if original_string != movie_string:
+                            movie_string += ' and'
+                        movie_string += f" purchased at {available_providers}"
+            movies.append(movie_string)
     elif len(title) < 2:
-        return ["title too short"], ""
-    if 'Viaplay' in params[title]:
-        via_movies, image = viaplay_finder(title)
-        if via_movies:
-            for i in via_movies:
-                is_and = False
-                movies_string = f"{i} can be "
-                if 'is_streamable' in via_movies[i]:
-                    if is_and:
-                        movies_string += '& '
-                    movies_string += "streamed "
-                    is_and = True
-                if 'rent_price' in via_movies[i]:
-                    if is_and:
-                        movies_string += '& '
-                    movies_string += f"rented for {via_movies[i]['rent_price']} SEK "
-                    is_and = True
-                if 'purchase_price' in via_movies[i]:
-                    if is_and:
-                        movies_string += '& '
-                    movies_string += f"purchased for {via_movies[i]['purchase_price']} SEK "
-                movies_string += "at Viaplay"
-                movies_list.append(movies_string)
-    print(movies_list)
-    return movies_list, image
+        return ["title too short"], image
+    print(movie_data)
+    return movie_data, image
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -133,23 +116,34 @@ def home():
         return flask.render_template('index.html')
 
     else:
-        my_dict = {title: [], "telly": False}
+        providers = []
         if flask.request.form.get('Netflix'):
-            my_dict[title].append('Netflix')
-            my_dict['telly'] = True
+            providers.append('nfx')
         if flask.request.form.get('Amazon'):
-            my_dict[title].append('Amazon Prime Video')
-            my_dict['telly'] = True
-        if flask.request.form.get('Google Play'):
-            my_dict[title].append('Google Play')
-            my_dict['telly'] = True
+            providers.append('prv')
         if flask.request.form.get('iTunes'):
-            my_dict[title].append('iTunes')
-            my_dict['telly'] = True
+            providers.append('itu')
+        if flask.request.form.get('Google Play'):
+            providers.append('ply')
         if flask.request.form.get('Viaplay'):
-            my_dict[title].append('Viaplay')
-        info, image = find(title, my_dict, country)
-        return flask.render_template('index.html', title=title, info=info, image=image, site_key=site_key, )
+            providers.append('vip')
+        if flask.request.form.get('Disney Plus'):
+            providers.append('dnp')
+        if flask.request.form.get('Cmore'):
+            providers.append('cmr')
+        if flask.request.form.get('Paramount Plus'):
+            providers.append('pmp')
+        if flask.request.form.get('Blockbuster'):
+            providers.append('bck')
+        if flask.request.form.get('SF Anytime'):
+            providers.append('sfa')
+        if flask.request.form.get('HBO Max'):
+            providers.append('hbm')
+        if flask.request.form.get('SVT Play'):
+            providers.append('svt')
+        info, image = find(title, providers, country)
+        return flask.render_template('index.html', title=title, info=info,
+                                     image=image, site_key=site_key, providers=providers)
 
 
 if __name__ == '__main__':

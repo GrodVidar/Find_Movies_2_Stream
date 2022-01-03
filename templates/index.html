@@ -4,7 +4,7 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
         <!--<link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">-->
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -12,12 +12,13 @@
         <title>Movie Searcher!</title>
         <script src="https://www.google.com/recaptcha/api.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     </head>
     <body class="w-100" style="min-height: 100%;">
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark mb-5">
             <div class="container bg-dark">
                   <a class="navbar-brand text-white" href="http://grodvidar.se">
-                      <img src="{{ url_for('static', filename='grod.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                      <img src="{{ url_for('static', filename='img/grod.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
                       GrodVidar
                   </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,11 +37,11 @@
                 <div class="row">
                     <div class="col"></div>
                     <div class="col-xs-12">
-                        <input type="checkbox" checked="checked" class="form-check-input" id="Netflix" name="Netflix">
+                        <input type="checkbox" class="form-check-input" id="Netflix" name="Netflix">
                         <label class="form-check-label mr-5" for="Netflix">Netflix</label>
-                        <input type="checkbox" checked="checked" class="form-check-input" id="Amazon" name="Amazon">
+                        <input type="checkbox" class="form-check-input" id="Amazon" name="Amazon">
                         <label class="form-check-label mr-5" for="Amazon">Amazon Prime</label>
-                        <input type="checkbox" checked="checked" class="form-check-input" id="Viaplay" name="Viaplay">
+                        <input type="checkbox" class="form-check-input" id="Viaplay" name="Viaplay">
                         <label class="form-check-label" for="Viaplay">Viaplay</label>
                     </div>
                     <div class="col"></div>
@@ -48,23 +49,54 @@
                 <div class="row">
                     <div class="col"></div>
                     <div class="col-xs-12">
+                        <input type="checkbox" class="form-check-input" id="Disney Plus" name="Disney Plus">
+                        <label class="form-check-label mr-5" for="Disney Plus">Disney Plus</label>
+                        <input type="checkbox" class="form-check-input" id="HBO Max" name="HBO Max">
+                        <label class="form-check-label mr-5" for="HBO Max">HBO Max</label>
+                        <input type="checkbox" class="form-check-input" id="SVT Play" name="SVT Play">
+                        <label class="form-check-label" for="SVT Play">SVT Play</label>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col-xs-12">
+                        <input type="checkbox" class="form-check-input" id="Cmore" name="Cmore">
+                        <label class="form-check-label mr-5" for="Cmore">Cmore</label>
+                        <input type="checkbox" class="form-check-input" id="Paramount Plus" name="Paramount Plus">
+                        <label class="form-check-label mr-5" for="Paramount Plus">Paramount Plus</label>
+                        <input type="checkbox" class="form-check-input" id="SF Anytime" name="SF Anytime">
+                        <label class="form-check-label" for="SF Anytime">SF Anytime</label>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col-xs-12">
+                        <input type="checkbox" class="form-check-input" id="Blockbuster" name="Blockbuster">
+                        <label class="form-check-label mr-5" for="Blockbuster">Blockbuster</label>
                         <input type="checkbox"class="form-check-input" id="iTunes" name="iTunes">
                         <label class="form-check-label mr-5" for="iTunes">iTunes</label>
                         <input type="checkbox" class="form-check-input" id="Google Play" name="Google Play">
                         <label class="form-check-label" for="Google Play">Google Play</label>
                     </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row">
+                    <div class="col"></div>
                     <div class="col">
                         <select id="country" name="country">
-                            <option value="se">Sweden</option>
-                            <option value="be">Belgium</option>
-                            <option value="uk">United Kingdom</option>
-                            <option value="us">USA</option>
-                            <option value="es">Spain</option>
-                            <option value="no">Norway</option>
-                            <option value="fr">France</option>
-                            <option value="de">Germany</option>
+                            <option value="SE">Sweden</option>
+                            <option value="BE">Belgium</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="US">USA</option>
+                            <option value="ES">Spain</option>
+                            <option value="NO">Norway</option>
+                            <option value="FR">France</option>
+                            <option value="DE">Germany</option>
                         </select>
                     </div>
+                    <div class="col"></div>
                 </div>
                 <div class="row mt-3">
                     <div class="col"></div>
@@ -85,7 +117,33 @@
                             <div class="row">
                                 <div class="col-8 col-xs-8">
                                     {% for i in info %}
-                                        <p class="ml-4">{{ i }}</p>
+                                    <div class="result">
+                                        <span>{{ i['title'] }} can be</span>
+                                        {% if i['monetization_types']['free']|length > 0 %}
+                                            <span> watched for free at</span>
+                                                {% for provider in i['monetization_types']['free'] %}
+                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a></span>
+                                                {% endfor %}
+                                        {% endif %}
+                                        {% if i['monetization_types']['flatrate']|length > 0 %}
+                                            <span>streamed with a subscription at</span>
+                                                {% for provider in i['monetization_types']['flatrate'] %}
+                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a></span>
+                                                {% endfor %}
+                                        {% endif %}
+                                        {% if i['monetization_types']['rent']|length > 0 %}
+                                            <span>rented at</span>
+                                                {% for provider in i['monetization_types']['rent'] %}
+                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a> for {{ provider['price'] }}</span>
+                                                {% endfor %}
+                                        {% endif %}
+                                        {% if i['monetization_types']['buy']|length > 0 %}
+                                            <span>rented at</span>
+                                                {% for provider in i['monetization_types']['buy'] %}
+                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a> for {{ provider['price'] }}</span>
+                                                {% endfor %}
+                                        {% endif %}
+                                    </div>
                                     {% endfor %}
                                 </div>
                                 <div class="col-xs-2">
@@ -155,5 +213,6 @@
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 </html>
