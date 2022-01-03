@@ -7,3 +7,7 @@ body{
     margin-left: 5px;
     margin-bottom: 4px;
 }
+
+.hidden{
+    display: none;
+}

@@ -5,10 +5,6 @@ from mail import send_mail
 from justwatch import JustWatch
 app = flask.Flask(__name__)
 
-# Netflix, Amazon prime, iTunes and Google Play API-caller
-# using the Utelly's API: "https://rapidapi.com/utelly/api/utelly"
-# And Viaplay's open API
-
 
 def get_provider(name, providers):
     for provider in providers:
@@ -43,9 +39,6 @@ def get_movie_providers(monetization_type, movie):
 def find(title, params, country):
     image = ''
     movie_data = []
-    movies = []
-    if len(params) < 1:
-        return ['no providers selected'], image
     if title and len(title) > 1:
         just_watch = JustWatch(country=country)
         results = just_watch.search_for_item(query=title, providers=params)
@@ -74,32 +67,6 @@ def find(title, params, country):
                                 provider_dict['url'] = offer['urls']['standard_web']
                             movie['monetization_types'][offer['monetization_type']].append(provider_dict)
             movie_data.append(movie)
-        for movie in movie_data:
-            movie_string = f"{movie['title']} can be"
-            original_string = movie_string
-            for monetization_type in movie['monetization_types']:
-                if len(movie['monetization_types'][monetization_type]) > 0:
-                    provider_names = []
-                    for provider in movie['monetization_types'][monetization_type]:
-                        provider_names.append(provider['provider_name'])
-                    available_providers = ', '.join(provider_names)
-                    if monetization_type == 'free':
-                        if original_string != movie_string:
-                            movie_string += ' and'
-                        movie_string += f" watched for free at {available_providers}"
-                    if monetization_type == 'flatrate':
-                        if original_string != movie_string:
-                            movie_string += ' and'
-                        movie_string += f" streamed with a subscription at {available_providers}"
-                    if monetization_type == 'rent':
-                        if original_string != movie_string:
-                            movie_string += ' and'
-                        movie_string += f" rented at {available_providers}"
-                    if monetization_type == 'buy':
-                        if original_string != movie_string:
-                            movie_string += ' and'
-                        movie_string += f" purchased at {available_providers}"
-            movies.append(movie_string)
     elif len(title) < 2:
         return ["title too short"], image
     print(movie_data)
@@ -147,7 +114,7 @@ def home():
             return flask.render_template('index.html', error='No providers selected')
         info, image = find(title, providers, country)
         return flask.render_template('index.html', title=title, info=info,
-                                     image=image, site_key=site_key, providers=providers)
+                                     image=image, site_key=site_key, providers=providers, country=country)
 
 
 if __name__ == '__main__':
