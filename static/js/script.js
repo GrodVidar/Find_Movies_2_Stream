@@ -6,6 +6,7 @@ $(function()
 
         if (state) this.checked = state.checked;
     });
+    $('#country')
 });
 
 $(window).bind('unload', function()

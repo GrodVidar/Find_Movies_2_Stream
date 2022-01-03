@@ -110,6 +110,11 @@
                 </div>
             </form>
             {% block content %}
+            {% if error %}
+                <div class="result">
+                    <span>{{ error }}</span>
+                </div>
+            {% endif %}
                 {% if title %}
                     <div class="jumbotron bg-dark h-100 mt-4">
                         <div class="container">

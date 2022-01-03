@@ -44,6 +44,8 @@ def find(title, params, country):
     image = ''
     movie_data = []
     movies = []
+    if len(params) < 1:
+        return ['no providers selected'], image
     if title and len(title) > 1:
         just_watch = JustWatch(country=country)
         results = just_watch.search_for_item(query=title, providers=params)
@@ -141,6 +143,8 @@ def home():
             providers.append('hbm')
         if flask.request.form.get('SVT Play'):
             providers.append('svt')
+        if len(providers) < 1:
+            return flask.render_template('index.html', error='No providers selected')
         info, image = find(title, providers, country)
         return flask.render_template('index.html', title=title, info=info,
                                      image=image, site_key=site_key, providers=providers)
