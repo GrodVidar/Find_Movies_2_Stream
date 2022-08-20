@@ -39,54 +39,6 @@
                 <input type="text" class="hidden" id="providers" value="{{ providers|join(',') }}">
                 <input type="text" class="hidden" id="selectedCountry" value="{{ country }}">
                 {% endif %}
-                <!--<div class="row">
-                    <div class="col"></div>
-                    <div class="col-xs-12">
-                        <input type="checkbox" class="form-check-input" id="nfx" name="Netflix">
-                        <label class="form-check-label mr-5" for="nfx">Netflix</label>
-                        <input type="checkbox" class="form-check-input" id="prv" name="Amazon">
-                        <label class="form-check-label mr-5" for="prv">Amazon Prime</label>
-                        <input type="checkbox" class="form-check-input" id="vip" name="Viaplay">
-                        <label class="form-check-label" for="vip">Viaplay</label>
-                    </div>
-                    <div class="col"></div>
-                </div>
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col-xs-12">
-                        <input type="checkbox" class="form-check-input" id="dnp" name="Disney Plus">
-                        <label class="form-check-label mr-5" for="dnp">Disney Plus</label>
-                        <input type="checkbox" class="form-check-input" id="hbm" name="HBO Max">
-                        <label class="form-check-label mr-5" for="hbm">HBO Max</label>
-                        <input type="checkbox" class="form-check-input" id="svt" name="SVT Play">
-                        <label class="form-check-label" for="svt">SVT Play</label>
-                    </div>
-                    <div class="col"></div>
-                </div>
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col-xs-12">
-                        <input type="checkbox" class="form-check-input" id="cmr" name="Cmore">
-                        <label class="form-check-label mr-5" for="cmr">Cmore</label>
-                        <input type="checkbox" class="form-check-input" id="pmp" name="Paramount Plus">
-                        <label class="form-check-label mr-5" for="pmp">Paramount Plus</label>
-                        <input type="checkbox" class="form-check-input" id="sfa" name="SF Anytime">
-                        <label class="form-check-label" for="sfa">SF Anytime</label>
-                    </div>
-                    <div class="col"></div>
-                </div>
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col-xs-12">
-                        <input type="checkbox" class="form-check-input" id="Blockbuster" name="Blockbuster">
-                        <label class="form-check-label mr-5" for="Blockbuster">Blockbuster</label>
-                        <input type="checkbox"class="form-check-input" id="itu" name="iTunes">
-                        <label class="form-check-label mr-5" for="itu">iTunes</label>
-                        <input type="checkbox" class="form-check-input" id="ply" name="Google Play">
-                        <label class="form-check-label" for="ply">Google Play</label>
-                    </div>
-                    <div class="col"></div>
-                </div>-->
                 <div class="btn-group-toggle" data-toggle="buttons" style="margin-bottom: 1rem; text-align: center;">
                     <label class="btn btn-dark active providerContainer">
                         <input type="checkbox" id="nfx" name="Netflix">
@@ -440,7 +392,7 @@
                                                 {% endfor %}
                                         {% endif %}
                                         {% if i['monetization_types']['buy']|length > 0 %}
-                                            <span>rented at</span>
+                                            <span>purchased at</span>
                                                 {% for provider in i['monetization_types']['buy'] %}
                                                     <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a> for {{ provider['price'] }}</span>
                                                 {% endfor %}
