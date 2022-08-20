@@ -124,6 +124,8 @@ def home():
             providers.append('svt')
         if flask.request.form.get('Apple TV Plus'):
             providers.append('atp')
+        if flask.request.form.get('Discovery Plus'):
+            providers.append('dpe')
         if len(providers) < 1:
             return flask.render_template('index.html', error='No providers selected')
         info, image = find(title, providers, country)
