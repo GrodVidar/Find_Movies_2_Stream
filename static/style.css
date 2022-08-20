@@ -11,3 +11,19 @@ body{
 .hidden{
     display: none;
 }
+
+.providerName {
+    font-size: 10px;
+    margin-bottom: 0;
+    max-width: 54px;
+    line-height: 14px;
+    margin-top: 1px;
+    word-wrap: break-word;
+}
+
+.providerContainer {
+    min-height: 93px;
+    max-height: 93px;
+    min-width: 76px;
+    max-width: 76px;
+}

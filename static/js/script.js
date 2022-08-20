@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $('#country').select2({
+    width: '100%'
+    });
     if(storageAvailable('localStorage')){
         $(function()
         {
@@ -10,7 +13,7 @@ $(document).ready(function() {
             });
             $('select[id=country]').each(function() {
                 var state = JSON.parse( localStorage.getItem('select_' + this.id));
-                if (state) this.value = state.value;
+                if (state) $(this).val(state.value).trigger('change');
             });
         });
 
@@ -39,11 +42,30 @@ $(document).ready(function() {
         }
         if (document.getElementById('selectedCountry')) {
             var country = document.getElementById('selectedCountry').value;
-            document.getElementById('country').value = country;
+            $('#country').val(country).trigger('change');
         }
 
     }
 })
+
+function format(item, state) {
+  if (!item.id) {
+    return item.text;
+  }
+  var countryUrl = "https://hatscripts.github.io/circle-flags/flags/";
+  var stateUrl = "https://oxguy3.github.io/flags/svg/us/";
+  var url = state ? stateUrl : countryUrl;
+  var img = $("<img>", {
+    class: "img-flag",
+    width: 26,
+    src: url + item.element.value.toLowerCase() + ".svg"
+  });
+  var span = $("<span>", {
+    text: " " + item.text
+  });
+  span.prepend(img);
+  return span;
+}
 
 function storageAvailable(type) {
     var storage;
