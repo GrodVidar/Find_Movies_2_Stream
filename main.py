@@ -84,6 +84,7 @@ def home():
     country = ''
     if not flask.request.form.get('country'):
         client_ip = flask.request.headers.get('X-Forwarded-For')
+        print(client_ip)
         if client_ip:
             ip_request = requests.get(IPSTACK_URL.format(client_ip=client_ip, api_key=ipstack_key))
             ip_data = json.loads(ip_request.text)
