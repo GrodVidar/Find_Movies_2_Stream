@@ -39,7 +39,7 @@
                 <input type="text" class="hidden" id="providers" value="{{ providers|join(',') }}">
                 <input type="text" class="hidden" id="selectedCountry" value="{{ country }}">
                 {% endif %}
-                <div class="btn-group-toggle" data-toggle="buttons" style="margin-bottom: 2px; text-align: center;">
+                <div class="btn-group-toggle col col-xl-8 mx-auto" data-toggle="buttons" style="margin-bottom: 2px; text-align: center;">
                     <label class="btn btn-dark active providerContainer">
                         <input type="checkbox" id="nfx" name="Netflix">
                         <img src="{{ url_for('static', filename='img/providers/Netflix.jfif') }}" width="50px" alt="Netflix">
@@ -75,8 +75,6 @@
                         <img src="{{ url_for('static', filename='img/providers/Cmore.jfif') }}" width="50px" alt="Cmore">
                         <p class="providerName">Cmore</p>
                     </label>
-                    </div>
-                    <div class="btn-group-toggle" data-toggle="buttons" style="margin-bottom: 1rem; text-align: center;">
                     <label class="btn btn-dark active providerContainer">
                         <input type="checkbox" id="pmp" name="Paramount Plus">
                         <img src="{{ url_for('static', filename='img/providers/Paramount_Plus.jfif') }}" width="50px" alt="Paramount Plus">
@@ -376,38 +374,72 @@
                         <div class="container">
                             <h3 class="display-4">Your results for <strong class="text-capitalize">{{ title }}</strong>:</h3>
                             <div class="row">
-                                <div class="col-8 col-xs-8">
-                                    {% for i in info %}
-                                    <div class="result">
-                                        <span>{{ i['title'] }} can be</span>
-                                        {% if i['monetization_types']['free']|length > 0 %}
-                                            <span> watched for free at</span>
-                                                {% for provider in i['monetization_types']['free'] %}
-                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a></span>
-                                                {% endfor %}
-                                        {% endif %}
-                                        {% if i['monetization_types']['flatrate']|length > 0 %}
-                                            <span>streamed with a subscription at</span>
-                                                {% for provider in i['monetization_types']['flatrate'] %}
-                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a></span>
-                                                {% endfor %}
-                                        {% endif %}
-                                        {% if i['monetization_types']['rent']|length > 0 %}
-                                            <span>rented at</span>
-                                                {% for provider in i['monetization_types']['rent'] %}
-                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a> for {{ provider['price'] }}</span>
-                                                {% endfor %}
-                                        {% endif %}
-                                        {% if i['monetization_types']['buy']|length > 0 %}
-                                            <span>purchased at</span>
-                                                {% for provider in i['monetization_types']['buy'] %}
-                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a> for {{ provider['price'] }}</span>
-                                                {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                    {% endfor %}
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <ul id="resultList">
+                                        {% for i in info %}
+                                            <li class="result">
+                                                <span>{{ i['title'] }} can be:</span>
+                                                {% if i['monetization_types']['free']|length > 0 %}
+                                                    <ul>
+                                                        <li>
+                                                            <span> Watched for free at:</span>
+                                                        </li>
+                                                        <ul>
+                                                                {% for provider in i['monetization_types']['free'] %}
+                                                                    <li>
+                                                                        <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a></span>
+                                                                    </li>
+                                                                {% endfor %}
+                                                        </ul>
+                                                    </ul>
+                                                {% endif %}
+                                                {% if i['monetization_types']['flatrate']|length > 0 %}
+                                                    <ul>
+                                                        <li>
+                                                            <span>Streamed with a subscription at:</span>
+                                                        </li>
+                                                        <ul>
+                                                                {% for provider in i['monetization_types']['flatrate'] %}
+                                                                    <li>
+                                                                        <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a></span>
+                                                                    </li>
+                                                                {% endfor %}
+                                                        </ul>
+                                                    </ul>
+                                                {% endif %}
+                                                {% if i['monetization_types']['rent']|length > 0 %}
+                                                    <ul>
+                                                        <li>
+                                                            <span>Rented at:</span>
+                                                        </li>
+                                                        <ul>
+                                                            {% for provider in i['monetization_types']['rent'] %}
+                                                                <li>
+                                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a> for {{ provider['price'] }}</span>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </ul>
+                                                {% endif %}
+                                                {% if i['monetization_types']['buy']|length > 0 %}
+                                                    <ul>
+                                                        <li>
+                                                            <span>Purchased at:</span>
+                                                        </li>
+                                                        <ul>
+                                                            {% for provider in i['monetization_types']['buy'] %}
+                                                                <li>
+                                                                    <span> <a href="{{ provider['url'] }}" target="_blank">{{ provider['provider_name'] }}</a> for {{ provider['price'] }}</span>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </ul>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-xs-12">
                                     <img class="img-responsive ml-5" src="{{ image }}" width="200" height="300" alt=":(">
                                 </div>
                             </div>
