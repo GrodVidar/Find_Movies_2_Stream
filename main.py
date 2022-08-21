@@ -84,11 +84,19 @@ def home():
     country = ''
     if not flask.request.form.get('country'):
         client_ip = flask.request.headers.get('X-Forwarded-For')
-        print(client_ip)
         if client_ip:
-            ip_request = requests.get(IPSTACK_URL.format(client_ip=client_ip, api_key=ipstack_key))
-            ip_data = json.loads(ip_request.text)
-            country = ip_data['country_code']
+            with open('ips.json', 'r+') as f:
+                saved_ips = json.load(f)
+                if client_ip in saved_ips:
+                    country = saved_ips[client_ip]
+                else:
+                    ip_request = requests.get(IPSTACK_URL.format(client_ip=client_ip, api_key=ipstack_key))
+                    ip_data = json.loads(ip_request.text)
+                    country = ip_data['country_code']
+                    saved_ips[client_ip] = country
+                    f.seek(0)
+                    f.truncate(0)
+                    json.dump(saved_ips, f)
     else:
         country = flask.request.form.get('country')
     print(flask.request.form)
