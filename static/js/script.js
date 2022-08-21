@@ -2,6 +2,16 @@ $(document).ready(function() {
     $('#country').select2({
     width: '100%'
     });
+
+    $(':checkbox').change(function() {
+        if($(this).is(':checked')) {
+            $(this).parents('label').css('border', 'green solid 2px');
+        }
+        else {
+            $(this).parents('label').css('border', '');
+        }
+    });
+
     if(storageAvailable('localStorage')){
         $(function()
         {
@@ -9,7 +19,12 @@ $(document).ready(function() {
             {
                 var state = JSON.parse( localStorage.getItem('checkbox_'  + this.id) );
 
-                if (state) this.checked = state.checked;
+                if (state) {
+                    this.checked = state.checked;
+                    if(state.checked){
+                        $(this).parents('label').css('border', 'green solid 2px');
+                    }
+                }
             });
             $('select[id=country]').each(function() {
                 var state = JSON.parse( localStorage.getItem('select_' + this.id));
