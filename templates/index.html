@@ -39,7 +39,7 @@
                 <input type="text" class="hidden" id="providers" value="{{ providers|join(',') }}">
                 <input type="text" class="hidden" id="selectedCountry" value="{{ country }}">
                 {% endif %}
-                <div class="btn-group-toggle col col-xl-8 mx-auto" data-toggle="buttons" style="margin-bottom: 2px; text-align: center;">
+                <div class="btn-group-toggle col col-xl-8 mx-auto mb-3" data-toggle="buttons" style="text-align: center;">
                     <label class="btn btn-dark active providerContainer">
                         <input type="checkbox" id="nfx" name="Netflix">
                         <img src="{{ url_for('static', filename='img/providers/Netflix.jfif') }}" width="50px" alt="Netflix">
@@ -56,7 +56,7 @@
                         <p class="providerName">Viaplay</p>
                     </label>
                     <label class="btn btn-dark active providerContainer">
-                        <input type="checkbox" id="dnp" name="HBO Max">
+                        <input type="checkbox" id="dnp" name="Disney Plus">
                         <img src="{{ url_for('static', filename='img/providers/Disney_Plus.jfif') }}" width="50px" alt="Disney Plus">
                         <p class="providerName">Disney Plus</p>
                     </label>
